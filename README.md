@@ -164,6 +164,7 @@ forge remove pymodule <package>      # remove a soft trait
 
 Solo project, but PRs are welcome — especially Hard Trait SDK support for languages other than C/C++ and Rust. Bug reports and fixes are always appreciated too.
 
+For instructions on building yourself refer to [BUILDING.md](BUILDING.md).
 ---
 
 ## License
