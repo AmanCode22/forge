@@ -28,7 +28,7 @@ mkdir binary/
 ./forge_build_env/bin/python3 -m nuitka --standalone --onefile -o binary/forge main.py
 ```
 After this completes you would have a compiled binary of forge in binary folder.
-Use it  ```./binary/forge```
+You can use it typing  ```./binary/forge``` in terminal.
 ## Building on Windows
 Would be added soon
 ## Building on Macos
