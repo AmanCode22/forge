@@ -59,6 +59,11 @@ python main.py --help
 
 ## Commands
 
+```bash
+forge --version
+forge -v
+```
+
 ### Soft Traits
 
 **Install from PyPI** — Forge queries the PyPI JSON API, selects the best wheel for your platform (platform-specific wheel first, then pure-Python `any` wheel, then sdist fallback), downloads it, and extracts into `~/.ethos/traits/`:
