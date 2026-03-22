@@ -11,6 +11,7 @@ from pymodule import (
     handle_wheel_get,
     handle_wheel_local,
 )
+from version import stage, version
 
 
 def main():
@@ -22,6 +23,9 @@ def main():
           forge get https://example.com/math_trait.zip  # Install a native hard trait
           forge list                                    # View all installed traits
           forge remove pymodule requests                # Uninstall a specific soft trait""",
+    )
+    parser.add_argument(
+        "-v", "--version", action="version", version=f"Forge {version} {stage}"
     )
     subparsers = parser.add_subparsers(dest="main_command", required=True)
 
