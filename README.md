@@ -1,29 +1,22 @@
-
 # Forge
+
+![Forge Logo](forge_logo.png)
 
 **The package manager for Ethos.**
 
-*Install Traits. Manage dependencies. Stay out of your way.*
+Install Traits. Manage dependencies. Stay out of your way.
 
+Forge is how you extend Ethos. It installs **Soft Traits** (Python packages from PyPI or local files) and **Hard Traits** (compiled native binaries) into your Ethos environment and manages them from the command line.
 
-
----
-
-Forge is how you extend Ethos. It installs **Soft Traits** (Python packages) and **Hard Traits** (compiled native binaries) into your Ethos environment and manages them from the command line.
-
-> Built by [Aman Adlakha](https://github.com/amancode22) — a Class 9 student from India, doing this solo.
-
----
-
-## Quick concepts
-
-**Soft Trait** — a Python package, installed from PyPI or a local file. Use it in Ethos with `bring in`.
-
-**Hard Trait** — a compiled shared library (C, C++, Rust, or anything with a C-compatible ABI), packaged as a zip with a `manifest.json`. Loads automatically when Ethos starts.
+I'm building this alongside Ethos as part of the same solo project.
 
 ---
 
 ## Installation
+
+### Windows
+
+A combined installer for both **Forge and Ethos** lives in the [ethos-lang releases](https://github.com/amancode22/ethos-lang/releases). That's the recommended way — it sets up both tools in one step. There's also a standalone compiled `.exe` for Forge in the [Forge releases](https://github.com/amancode22/forge/releases).
 
 ### Linux (pre-built binary)
 
@@ -32,7 +25,7 @@ chmod +x forge
 sudo mv forge /usr/local/bin/
 ```
 
-> Windows, macOS, Android (Termux), and native Linux packages (`.deb`, `.rpm`, AUR) are on the roadmap.
+Linux package builds are coming soon — `.tar.gz` with a compiler and `install.sh`, COPR, PPA, and AUR (both PKGBUILD and a pre-compiled binary package).
 
 ### From source
 
@@ -46,9 +39,15 @@ python main.py --help
 
 ---
 
-## Commands
+## Quick concepts
 
-Output prefixes:
+**Soft Trait** — a Python package, installed from PyPI or a local file. Use it in Ethos with `bring in`. Lives in `~/.ethos/traits/`.
+
+**Hard Trait** — a compiled shared library (C, C++, Rust, or anything with a C-compatible ABI), packaged as a zip with a `manifest.json`. Loads automatically when Ethos starts. Lives in `~/.ethos/traits/hard_traits/<name>/`.
+
+---
+
+## Output prefixes
 
 | Prefix | Means |
 |--------|-------|
@@ -58,39 +57,36 @@ Output prefixes:
 
 ---
 
+## Commands
+
 ### Soft Traits
 
-#### From PyPI
+**Install from PyPI** — Forge queries the PyPI JSON API, selects the best wheel for your platform (platform-specific wheel first, then pure-Python `any` wheel, then sdist fallback), downloads it, and extracts into `~/.ethos/traits/`:
 
 ```bash
 forge pymodule get <package>
-```
-
-Forge hits the PyPI API, picks the best wheel for your system (platform wheel → pure Python wheel → sdist fallback), downloads it, extracts it. Done.
-
-```bash
 forge pymodule get requests
 ```
 
-#### From a remote wheel URL
+**Install from a remote wheel URL:**
 
 ```bash
 forge pymodule wheel get <url>
 ```
 
-#### From a local wheel file
+**Install from a local `.whl` file:**
 
 ```bash
 forge pymodule wheel local <path>
 ```
 
-#### From a remote sdist tarball
+**Install from a remote sdist tarball:**
 
 ```bash
 forge pymodule sdist get <url>
 ```
 
-#### From a local sdist tarball
+**Install from a local `.tar.gz` sdist:**
 
 ```bash
 forge pymodule sdist local <path>
@@ -100,15 +96,13 @@ forge pymodule sdist local <path>
 
 ### Hard Traits
 
-#### From a URL
+**Install from a URL** — downloads the zip, searches it for `manifest.json` at any depth, validates that `name` and `binary` are present, then moves the trait folder into `~/.ethos/traits/hard_traits/<name>/`:
 
 ```bash
 forge get <url>
 ```
 
-Downloads the zip, validates the manifest, installs the trait.
-
-#### From a local zip
+**Install from a local zip:**
 
 ```bash
 forge local <path>
@@ -116,22 +110,34 @@ forge local <path>
 
 ---
 
-### Listing what's installed
+### Listing installed traits
 
 ```bash
-forge list             # everything
-forge list pymodule    # soft traits only
-forge list native      # hard traits only
+forge list             # everything (Soft and Hard Traits)
+forge list pymodule    # Soft Traits only
+forge list native      # Hard Traits only
 ```
 
 ---
 
-### Removing things
+### Removing traits
 
 ```bash
-forge remove <trait-name>            # remove a hard trait
-forge remove pymodule <package>      # remove a soft trait
+forge remove <trait-name>         # remove a Hard Trait by folder name
+forge remove pymodule <package>   # remove a Soft Trait by folder name
 ```
+
+---
+
+## How Soft Trait installation works
+
+Forge never runs install scripts. It only extracts the archive. The platform detection works by reading `sysconfig.get_platform()` and matching that tag against wheel filenames. If no matching wheel is found, it falls back to the sdist `.tar.gz`. For a package to be importable after installation, its top-level module folder must land directly inside `~/.ethos/traits/`.
+
+---
+
+## How Hard Trait installation works
+
+Forge unpacks the zip into a temp directory, does a recursive search for `manifest.json`, validates that `name` and `binary` fields exist, then moves the trait's parent folder into `~/.ethos/traits/hard_traits/<name>/`. The Ethos runtime handles the rest at startup — it reads the manifest, loads the `.so` with `ctypes.CDLL`, and wires up every exported function's signature.
 
 ---
 
@@ -140,35 +146,54 @@ forge remove pymodule <package>      # remove a soft trait
 ```
 ~/.ethos/
 └── traits/
-    ├── requests/        ← soft trait
-    ├── numpy/           ← soft trait
+    ├── requests/           <- Soft Trait (Python package)
+    ├── numpy/              <- Soft Trait
     └── hard_traits/
-        └── mymath/      ← hard trait
+        └── mymath/         <- Hard Trait
             ├── manifest.json
             └── mymath.so
 ```
 
 ---
 
+## Error reference
+
+| Message | What happened |
+|---|---|
+| `[-] This package does not exist or its a network error/pypi might be blocked` | PyPI lookup failed or the package name is wrong. |
+| `[-] Cannot get results from pypi...` | PyPI response couldn't be decoded. |
+| `[-] This package doesnt support your system and its tar sdist isnt published` | No compatible wheel or sdist for your platform. |
+| `[-] Invalid Hard Trait: No manifest.json found` | The zip doesn't contain a `manifest.json` anywhere inside it. |
+| `[-] Trait cannot be installed due to invalid manifest.json.` | Manifest is missing `name` or `binary`. |
+| `[-] Failed to remove. Soft trait <n> is not installed.` | Folder not found in `~/.ethos/traits/`. |
+| `[-] Failed to remove. Hard trait <n> is not installed.` | Folder not found in `~/.ethos/traits/hard_traits/`. |
+
+---
+
 ## What's next
 
-- [ ] Windows `.msi` installer
-- [ ] macOS `.pkg` installer
-- [ ] Linux: `.deb`, `.rpm`, AUR
-- [ ] Android via Termux
-- [ ] Eventually: rewrite core in C, C++, or Rust to drop the Python dependency entirely
+- Linux `.tar.gz` (compiler + install.sh), COPR, PPA, and AUR with pre-compiled package
+- macOS support
+- `forge update` — update an installed Soft Trait to latest
+- Hard Trait SDK for C/C++ and Rust
+- Eventually: rewrite core in C, C++, or Rust to drop the Python dependency entirely
 
 ---
 
 ## Contributing
 
-Solo project, but PRs are welcome — especially Hard Trait SDK support for languages other than C/C++ and Rust. Bug reports and fixes are always appreciated too.
+Solo project but PRs are welcome — especially Hard Trait SDK support for languages other than C/C++ and Rust. Bug reports and fixes are always appreciated.
 
-For instructions on building yourself refer to [BUILDING.md](BUILDING.md).
+Build instructions: [BUILDING.md](BUILDING.md).
+
+## Related
+
+The combined Windows installer for both Forge and Ethos lives in the [ethos-lang releases](https://github.com/amancode22/ethos-lang/releases).
+
+Ethos itself: [github.com/amancode22/ethos-lang](https://github.com/amancode22/ethos-lang)
+
 ---
 
 ## License
 
 GPL-3.0. See [LICENSE](LICENSE).
-
----
