@@ -8,6 +8,10 @@ def handle_list_pymodule(args):
     for i in traits_path.iterdir():
         if not i.is_dir() or i.name == "hard_traits":
             continue
+        if i.name.endswith(".dist-info"):
+            continue
+        if i.name == "__pycache__":
+            continue
         print(f"[*] {i.name} (Soft Trait)")
 
 

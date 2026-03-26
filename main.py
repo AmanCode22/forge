@@ -143,23 +143,23 @@ def main():
         forge remove <hard trait name>""",
     )
     remove_parser.add_argument(
-        "name", nargs="?", help="Name of native trait to remove."
+        "remove_args", nargs="+", help="Usage: 'pymodule <name>' or just '<name>'"
     )
-    remove_parser.set_defaults(func=handle_remove_native)
-
-    remove_sub = remove_parser.add_subparsers(dest="remove_action")
-    r_py = remove_sub.add_parser(
-        "pymodule",
-        help="Uninstall and delete a Python-based Soft Trait by its folder name.",
-        epilog="""Example:
-        forge remove pymodule requests""",
-    )
-    r_py.add_argument("name")
-    r_py.set_defaults(func=handle_remove_pymodule)
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
         sys.exit(1)
     args = parser.parse_args()
+    if args.main_command == "remove":
+        if len(args.remove_args) == 2 and args.remove_args[0] == "pymodule":
+            handle_remove_pymodule(args.remove_args[1])
+            exit(0)
+        elif len(args.remove_args) == 1:
+            handle_remove_native(args.remove_args[0])
+            exit(0)
+        else:
+            print("forge remove", (" ".join(args.remove_args)), "is invalid.")
+            parser.print_help()
+            exit(1)
     if hasattr(args, "func"):
         args.func(args)
     else:
