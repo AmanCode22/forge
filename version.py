@@ -1,2 +1,2 @@
-version = "v0.3.0"
-stage = "Alpha"
+version = "v0.4.0"
+stage = "Beta"
