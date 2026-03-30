@@ -1,5 +1,6 @@
 import argparse
 import sys
+from sys import exit
 
 from cleanup import handle_remove_native, handle_remove_pymodule
 from hard_trait import handle_native_get, handle_native_local
