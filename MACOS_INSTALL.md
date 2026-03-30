@@ -8,7 +8,7 @@ The pre-built binary on the [releases page](https://github.com/AmanCode22/forge/
 
 The `.pkg` on the [ethos-lang releases page](https://github.com/AmanCode22/ethos-lang/releases) installs both **Ethos and Forge** in one shot. There is no separate Forge `.pkg` — they ship together.
 
-Download `Ethos-vX.X.X-macos.pkg` and double-click it. The installer copies `ethos` and `forge` to `/usr/local/bin/` and they're immediately available in your terminal.
+Download pkg file for your architecture and double-click it. The installer copies `ethos` and `forge` to `/usr/local/bin/` and they're immediately available in your terminal.
 
 ---
 
