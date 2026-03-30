@@ -36,12 +36,12 @@ python3 -m venv forge_build_env
 ./forge_build_env/bin/pip install -r requirements.txt
 mkdir binary/
 unset LDFLAGS
-./forge_build_env/bin/python3 -m nuitka --standalone --onefile --no-strip -o binary/forge main.py
+./forge_build_env/bin/python3 -m nuitka --standalone --onefile --unstripped -o binary/forge main.py
 ```
 
 The compiled binary lands in `binary/forge`.
 
-> `--no-strip` is important — without it the environment may strip the binary after Nuitka builds it, which destroys the self-extracting payload and causes a `couldn't find attached data header` error at runtime.
+> `--unstripped` is important — without it the environment may strip the binary after Nuitka builds it, which destroys the self-extracting payload and causes a `couldn't find attached data header` error at runtime.
 
 ---
 
@@ -83,7 +83,7 @@ cd forge/
 python3 -m venv forge_build_env
 ./forge_build_env/bin/pip install -r requirements.txt
 mkdir binary/
-./forge_build_env/bin/python3 -m nuitka --standalone --onefile --no-strip -o binary/forge main.py
+./forge_build_env/bin/python3 -m nuitka --standalone --onefile --unstripped -o binary/forge main.py
 ```
 
 This produces a binary for the architecture you're currently running.
@@ -95,7 +95,7 @@ Build both architectures separately and combine with `lipo`.
 **Step 1 — arm64 binary** (on Apple Silicon):
 
 ```bash
-arch -arm64 ./forge_build_env/bin/python3 -m nuitka --standalone --onefile --no-strip -o binary/forge-arm64 main.py
+arch -arm64 ./forge_build_env/bin/python3 -m nuitka --standalone --onefile --unstripped -o binary/forge-arm64 main.py
 ```
 
 **Step 2 — x86_64 binary** (on Intel, or Apple Silicon using Rosetta):
@@ -103,7 +103,7 @@ arch -arm64 ./forge_build_env/bin/python3 -m nuitka --standalone --onefile --no-
 ```bash
 arch -x86_64 /usr/bin/python3 -m venv forge_build_env_x86
 arch -x86_64 ./forge_build_env_x86/bin/pip install -r requirements.txt
-arch -x86_64 ./forge_build_env_x86/bin/python3 -m nuitka --standalone --onefile --no-strip -o binary/forge-x86_64 main.py
+arch -x86_64 ./forge_build_env_x86/bin/python3 -m nuitka --standalone --onefile --unstripped -o binary/forge-x86_64 main.py
 ```
 
 **Step 3 — combine:**
@@ -135,7 +135,7 @@ arch -x86_64 /usr/local/bin/brew install python@3.12
 
 arch -x86_64 /usr/local/bin/python3.12 -m venv forge_build_env_x86
 arch -x86_64 ./forge_build_env_x86/bin/pip install -r requirements.txt
-arch -x86_64 ./forge_build_env_x86/bin/python3 -m nuitka --standalone --onefile --no-strip -o binary/forge-x86_64 main.py
+arch -x86_64 ./forge_build_env_x86/bin/python3 -m nuitka --standalone --unstripped  -o binary/forge-x86_64 main.py
 ```
 
 ### Building the combined .pkg installer for macOS
