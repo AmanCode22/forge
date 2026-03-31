@@ -1,6 +1,6 @@
 # Forge
 
-![Forge Logo](forge_logo.png)
+<img src="forge_logo.png" alt="Forge Logo" width="500">
 
 **The package manager for Ethos.**
 
