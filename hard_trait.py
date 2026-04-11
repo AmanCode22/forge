@@ -24,7 +24,7 @@ def extract_native_zip(file_path):
                 print("[-] Trait cannot be installed due to invalid manifest.json.")
                 exit()
             trait_name = json_manifest["name"]
-            target_folder = hard_traits_path / trait_name
+            target_folder = hard_traits_path
             shutil.move(str(search_result[0].parent), str(target_folder))
 
 

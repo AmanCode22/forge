@@ -3,6 +3,7 @@ import sys
 from sys import exit
 
 from cleanup import handle_remove_native, handle_remove_pymodule
+from foundry import install_trait_foundry, search_trait_foundry
 from hard_trait import handle_native_get, handle_native_local
 from inventory import handle_list, handle_list_native, handle_list_pymodule
 from pymodule import (
@@ -23,12 +24,38 @@ def main():
           forge pymodule get requests                   # Install a soft trait from PyPI
           forge get https://example.com/math_trait.zip  # Install a native hard trait
           forge list                                    # View all installed traits
-          forge remove pymodule requests                # Uninstall a specific soft trait""",
+          forge remove pymodule requests                # Uninstall a specific soft trait
+          forge foundry installl <trait_name>           # Installs hard trait from ethos foundry""",
     )
     parser.add_argument(
         "-v", "--version", action="version", version=f"Forge {version} {stage}"
     )
     subparsers = parser.add_subparsers(dest="main_command", required=True)
+
+    foundry_parser = subparsers.add_parser(
+        "foundry", help="Search and Get utility of hard trait from Ethos Foundry."
+    )
+    foundry_sub = foundry_parser.add_subparsers(dest="foundry_action", required=True)
+
+    # forge foundry get <name>
+    foundry_get = foundry_sub.add_parser(
+        "get",
+        help="Fetch and install a Hard Trait directly from the Ethos Foundry.",
+        epilog="""Example:
+        forge foundry get greetc""",
+    )
+    foundry_get.add_argument("hardtrait_name")
+    foundry_get.set_defaults(func=install_trait_foundry)
+
+    # forge foundry search <query>
+    foundry_get = foundry_sub.add_parser(
+        "search",
+        help="Searches Ethos Foundry for the specific query.",
+        epilog="""Example:
+        forge foundry search greetc""",
+    )
+    foundry_get.add_argument("query")
+    foundry_get.set_defaults(func=search_trait_foundry)
 
     pymodule_parser = subparsers.add_parser(
         "pymodule", help="Manage Python-based dependencies (Soft Traits)."
