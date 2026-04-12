@@ -43,7 +43,7 @@ pkg install ./termux-deb-path-here-which-you-downloaded.deb
 #### By adding repo
 Run
 ```
-echo "deb [trusted=yes] file:///home/aman/Documents/ethos-termux-repo/repo termux extras" >> $PREFIX/etc/apt/sources.list.d/ethos-local.list
+echo "deb [trusted=yes] https://amancode22.github.io/ethos-termux-repo/repo termux extras" >> $PREFIX/etc/apt/sources.list.d/ethos-local.list
 pkg update
 pkg install ethos-lang-termux ethos-forge-termux
 ```
