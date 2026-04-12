@@ -63,7 +63,8 @@ python main.py --help
 
 **Soft Trait** — a Python package installed from PyPI or a local file. Use it in Ethos with `bring in`. Lives in `~/.ethos/traits/`.
 
-**Hard Trait** — a compiled shared library (C, C++, Rust, or anything with a C-compatible ABI), packaged as a zip with a `manifest.json`. Loads automatically when Ethos starts. Lives in `~/.ethos/traits/hard_traits/<n>/`. Its SDK and more information can be found at foundry(github.com/amancode22/ethos-foundry)
+**Hard Trait** — a compiled shared library (C, C++, Rust, or anything with a C-compatible ABI), packaged as a zip with a `manifest.json`. Loads automatically when Ethos starts. Lives in `~/.ethos/traits/hard_traits/<n>/`. Its SDK and more information can be found at foundry (github.com/amancode22/ethos-foundry)[github.com/amancode22/ethos-foundry]
+
 ---
 
 ## Output prefixes
