@@ -30,10 +30,23 @@ See [LINUX_INSTALL.md](LINUX_INSTALL.md) for all options — OBS repos, AUR, and
 
 > Installing `ethos-forge` via a Linux package manager will pull in `ethos-lang` automatically as a hard dependency. You don't need to install Ethos first.
 
-### Android (Termux)
-
-Coming soon.
-
+### Android via Termux
+Nuitka builds on termux are not supported due to restrictions and linker issue so ethos in termux requires python and is just a wrapper to run python source code compressed using zipapp. After rust rewrite the termux prebuilt binaries would be provided till then .deb file and termux pkg integration is just done. Supported after v0.5.0 beta.
+You can also add repo of ethos in termux.
+#### By downlaoading debs
+Run after downloading the deb file manually or using wget or curl
+```bash
+pkg update && pkg upgrade
+pkg install python
+pkg install ./termux-deb-path-here-which-you-downloaded.deb
+```
+#### By adding repo
+Run
+```
+echo "deb [trusted=yes] file:///home/aman/Documents/ethos-termux-repo/repo termux extras" >> $PREFIX/etc/apt/sources.list.d/ethos-local.list
+pkg update
+pkg install ethos-lang-termux ethos-forge-termux
+```
 ### From source
 
 Python 3.10+, no extra dependencies beyond the standard library.
@@ -50,8 +63,7 @@ python main.py --help
 
 **Soft Trait** — a Python package installed from PyPI or a local file. Use it in Ethos with `bring in`. Lives in `~/.ethos/traits/`.
 
-**Hard Trait** — a compiled shared library (C, C++, Rust, or anything with a C-compatible ABI), packaged as a zip with a `manifest.json`. Loads automatically when Ethos starts. Lives in `~/.ethos/traits/hard_traits/<n>/`. Hard Trait SDK for C/C++ and Rust is coming soon.
-
+**Hard Trait** — a compiled shared library (C, C++, Rust, or anything with a C-compatible ABI), packaged as a zip with a `manifest.json`. Loads automatically when Ethos starts. Lives in `~/.ethos/traits/hard_traits/<n>/`. Its SDK and more information can be found at foundry(github.com/amancode22/ethos-foundry)
 ---
 
 ## Output prefixes
@@ -120,6 +132,17 @@ Install from a local zip:
 ```bash
 forge local <path>
 ```
+### Ethos Foundry support
+
+Searching a hard trait in ethos-foundry
+```bash
+forge foundry search greetc
+```
+
+Installing a trait from foundry
+```bash
+forge foundry get greetc
+```
 
 ### Listing installed traits
 
@@ -181,9 +204,6 @@ Forge unpacks the zip to a temp directory, does a recursive search for `manifest
 
 ## What's next
 
-- Android via Termux
-- `forge update` — update an installed Soft Trait to latest
-- Hard Trait SDK for C/C++ and Rust
 - Eventually: rewrite core in C, C++, or Rust to drop the Python dependency entirely
 
 ---
@@ -202,6 +222,7 @@ macOS installation: [MACOS_INSTALL.md](MACOS_INSTALL.md)
 
 - Ethos (the language) → [github.com/AmanCode22/ethos-lang](https://github.com/AmanCode22/ethos-lang)
 - ethos-builder (build scripts, packaging) → [github.com/AmanCode22/ethos-builder](https://github.com/AmanCode22/ethos-builder)
+- Ethos Foundry (Collection of hard traits): [github.com/amancode22/ethos-foundry](github.com/amancode22/ethos-foundry)
 
 The combined Windows and macOS installers for both Forge and Ethos are in the [ethos-lang releases](https://github.com/AmanCode22/ethos-lang/releases).
 
