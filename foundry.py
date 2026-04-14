@@ -20,10 +20,9 @@ def detect_platform():
     elif system == "windows":
         os_name = "windows"
     elif system == "linux":
-        if "com.termux" in os.environ.get("PREFIX", ""):
-            os_name = "android"
-        else:
-            os_name = "linux"
+        os_name = "linux"
+    elif system=="android":
+        os_name="android"
     else:
         os_name = system
 
