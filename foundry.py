@@ -33,7 +33,7 @@ def detect_platform():
         arch = "x86_64"
     elif machine in ["arm64", "aarch64"]:
         arch = "aarch64"
-    elif machine in ["armv7l", "armv8l","arm]:
+    elif machine in ["armv7l", "armv8l","arm"]:
         arch = "armv7"
     else:
         arch = machine
