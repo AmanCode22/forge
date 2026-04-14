@@ -22,7 +22,7 @@ def detect_platform():
     elif system == "linux":
         os_name = "linux"
     elif system=="android":
-        os_name="android"
+        os_name="termux"
     else:
         os_name = system
 
