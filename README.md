@@ -43,10 +43,12 @@ pkg install ./termux-deb-path-here-which-you-downloaded.deb
 #### By adding repo
 Run
 ```
-echo "deb [trusted=yes] https://amancode22.github.io/ethos-termux-repo/repo termux extras" >> $PREFIX/etc/apt/sources.list.d/ethos-local.list
+mkdir -p $PREFIX/etc/apt/sources.list.d/
+echo "deb [trusted=yes] https://amancode22.github.io/ethos-termux-repo/repo termux extras" >> $PREFIX/etc/apt/sources.list.d/ethos-repo.list
 pkg update
-pkg install ethos-lang-termux ethos-forge-termux
+pkg install ethos-lang ethos-forge
 ```
+
 ### From source
 
 Python 3.10+, no extra dependencies beyond the standard library.
