@@ -185,8 +185,7 @@ Build the macOS binary on a real Mac. Use Darling only for running it on Linux.
 
 ## Android (Termux)
 
-Coming soon.
+Just zipapps due to linker issue so no build required
 
 ---
-
 For packaging scripts, OBS spec files, Debian control files, and the Windows installer, see [ethos-builder](https://github.com/AmanCode22/ethos-builder).
