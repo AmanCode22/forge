@@ -21,7 +21,7 @@ def detect_platform():
         os_name = "windows"
     elif system == "linux":
         if "com.termux" in os.environ.get("PREFIX", ""):
-            os_name = "termux"
+            os_name = "android"
         else:
             os_name = "linux"
     else:
@@ -33,7 +33,7 @@ def detect_platform():
         arch = "x86_64"
     elif machine in ["arm64", "aarch64"]:
         arch = "aarch64"
-    elif machine in ["armv7l", "armv8l"]:
+    elif machine in ["armv7l", "armv8l","arm]:
         arch = "armv7"
     else:
         arch = machine
