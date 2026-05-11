@@ -10,6 +10,11 @@ Forge is how you extend Ethos. It installs **Soft Traits** (Python packages from
 
 I'm building this alongside Ethos as part of the same solo project. Class 9 student from India.
 
+Rust Rewrite in progress
+Forge alongside Ethos is currently being rewritten in rust by me, you can track it's status in brnach rust-rewrite. I would try my best to make it as similar to the python version as I can.
+
+
+
 ---
 
 ## Installation
